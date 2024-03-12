@@ -18,8 +18,12 @@ from django.urls import path
 from scheduler import views
 
 urlpatterns = [
-    path('calendars/', views.calendar_all),
-    path('calendars/<int:id>/initiate_meeting/', views.meeting_all),
-    path('meetings/<int:id>/set_preference/', views.preference_all)
+    path('calendars/', views.calendar),
+    path('calendars/<int:id>/initiate_meeting/', views.meeting),
+    path('meetings/<int:id>/set_preference/', views.preference),
+    path('meetings/<int:id>/proposals/', views.schedule_proposals),
+    path('meetings/<int:id>/finalized/', views.schedule_get_finalize),
+    path('meetings/<int:meeting_id>/finalized/<int:schedule_id>/', views.schedule_make_finalize)
+    
     
 ]
