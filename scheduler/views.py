@@ -1,7 +1,7 @@
 from django.http import JsonResponse
 from django.shortcuts import render
-from scheduler.models import Calendar, Meeting, Preference, Schedule
-from scheduler.serializers import CalendarSerializer, MeetingSerializer, PreferenceSerializer, ScheduleSerializer
+from .models import Calendar, Meeting, Preference, Schedule
+from .serializers import CalendarSerializer, MeetingSerializer, PreferenceSerializer, ScheduleSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
@@ -19,7 +19,7 @@ def calendar(request):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status.HTTP_201_CREATED)
-        
+
 @api_view(['GET', 'POST'])
 def meeting(request, id):
     try:
@@ -37,7 +37,7 @@ def meeting(request, id):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status.HTTP_201_CREATED)
-        
+
 @api_view(['GET', 'POST'])
 def preference(request, id):
     try:
@@ -55,7 +55,7 @@ def preference(request, id):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status.HTTP_201_CREATED)
-        
+
 @api_view(['GET', 'POST'])
 def schedule_proposals(request, id):
     try:
@@ -74,7 +74,7 @@ def schedule_proposals(request, id):
             serializer.save()
             return Response(serializer.data, status.HTTP_201_CREATED)
 
-@api_view(['GET'])        
+@api_view(['GET'])
 def schedule_get_finalize(request, id):
     try:
         Meeting.objects.get(pk=id)
@@ -86,18 +86,18 @@ def schedule_get_finalize(request, id):
         serializer = ScheduleSerializer(schedule, many=True)
         return JsonResponse({'preference': serializer.data})
 
-@api_view(['PUT']) 
+@api_view(['PUT'])
 def schedule_make_finalize(request, meeting_id, schedule_id):
     try:
         Meeting.objects.get(pk=meeting_id)
     except Meeting.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
-    
+
     try:
         schedule = Schedule.objects.get(pk=schedule_id) # Get <shcedule_id> schedules under <id> meeting
     except Schedule.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
-    
+
     if request.method == 'PUT':
         serializer = ScheduleSerializer(schedule, data=request.data)
         if serializer.is_valid():

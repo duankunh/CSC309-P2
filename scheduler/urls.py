@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from scheduler import views
+from . import views
 
 urlpatterns = [
     path('calendars/', views.calendar),
@@ -24,6 +24,6 @@ urlpatterns = [
     path('meetings/<int:id>/proposals/', views.schedule_proposals),
     path('meetings/<int:id>/finalized/', views.schedule_get_finalize),
     path('meetings/<int:meeting_id>/finalized/<int:schedule_id>/', views.schedule_make_finalize)
-    
-    
+
+
 ]
