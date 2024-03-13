@@ -1,7 +1,6 @@
 from django.db import models
 from django.conf import settings
-
-
+# from scheduler.models import Meeting
 class Contact(models.Model):
     STATUS_CHOICES = [
         ('None', 'None'),
@@ -14,6 +13,7 @@ class Contact(models.Model):
     email = models.EmailField()
     status = models.CharField(max_length=8, choices=STATUS_CHOICES,
                               default='None')
+    # meetings = models.ManyToManyField(Meeting, related_name='contacts')
 
     class Meta:
         app_label = 'contacts'

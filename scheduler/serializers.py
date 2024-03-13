@@ -5,7 +5,8 @@ from .models import Calendar, Meeting, Preference, Schedule
 class CalendarSerializer(serializers.ModelSerializer):
     class Meta:
         model = Calendar
-        fields = ['id', 'name']
+        fields = ['id', 'name', 'owner']
+        read_only_fields = ['owner']
 
 
 class MeetingSerializer(serializers.ModelSerializer):
@@ -24,3 +25,7 @@ class ScheduleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Schedule
         fields = ['id', 'start_time', 'end_time', 'schedule_status', 'meeting']
+
+
+
+

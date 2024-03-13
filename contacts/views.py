@@ -52,10 +52,11 @@ def send_reminder(request):
                                                 status='Pending')
     print("reach here?")
     for contact in contacts_to_remind:
+        print(contact)
         send_mail(
             'Meeting Reminder',
             'This is a reminder to provide the requested information.',
-            'jack.duan@mail.utoronto.ca',  # Your email
+            'abamakabaka@yahoo.com',
             [contact.email],
             fail_silently=False,
         )

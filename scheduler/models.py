@@ -1,7 +1,8 @@
 from django.db import models
-
+from django.conf import settings
 class Calendar(models.Model):
     name = models.CharField(max_length=100)  # Name of the calendar
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='calendars')
     # description = models.TextField()
 
     def __str__(self):
@@ -12,12 +13,11 @@ class Meeting(models.Model):
     date = models.DateField()  # Date of the meeting
     duration = models.DurationField()  # Duration of the meeting
     calendar = models.ForeignKey(Calendar, on_delete=models.CASCADE)
-    #contacts = 
 
 
     def __str__(self):
         return self.name
-    
+
 class Preference(models.Model):
     start_time = models.TimeField()  # Start time of non-busy time
     end_time = models.TimeField()  # End time of the non-busy time

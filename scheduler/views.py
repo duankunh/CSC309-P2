@@ -5,6 +5,8 @@ from .serializers import CalendarSerializer, MeetingSerializer, PreferenceSerial
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework import status, permissions
+from datetime import timedelta, datetime, date
+
 
 
 @api_view(['GET', 'POST'])
@@ -12,15 +14,16 @@ from rest_framework import status, permissions
 def calendar(request):
 
     if request.method == 'GET':
-        calendars = Calendar.objects.all()
+        calendars = Calendar.objects.filter(owner=request.user)
         serializer = CalendarSerializer(calendars, many=True)
         return JsonResponse({'calendars': serializer.data})
 
     if request.method == 'POST':
         serializer = CalendarSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            serializer.save(owner=request.user)
             return Response(serializer.data, status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET', 'POST'])
 @permission_classes([permissions.IsAuthenticated])
@@ -131,4 +134,7 @@ def preference_update(request, meeting_id, preference_id):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-# Create your views here.
+
+# for testing the implementation of suggested schedule
+####################
+####################

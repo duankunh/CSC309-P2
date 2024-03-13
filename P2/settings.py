@@ -31,8 +31,8 @@ ALLOWED_HOSTS = []
 # SMTP
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.mail.yahoo.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
+EMAIL_PORT = 465
+
 EMAIL_HOST_USER = 'abamakabaka@yahoo.com'
 EMAIL_HOST_PASSWORD = 'QWER123456789QW!'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
