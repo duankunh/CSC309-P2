@@ -23,5 +23,6 @@ urlpatterns = [
     path('meetings/<int:id>/set_preference/', views.preference),
     path('meetings/<int:id>/proposals/', views.schedule_proposals),
     path('meetings/<int:id>/finalized/', views.schedule_get_finalize),
-    path('meetings/<int:meeting_id>/finalized/<int:schedule_id>/', views.schedule_make_finalize)
+    path('meetings/<int:meeting_id>/finalized/<int:schedule_id>/', views.schedule_make_finalize),
+    path('meetings/<int:meeting_id>/preference/<int:preference_id>/', views.preference_update)
 ]

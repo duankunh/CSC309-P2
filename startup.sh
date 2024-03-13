@@ -7,9 +7,9 @@ if [ ! -d "venv" ]; then
     python3 -m venv venv
 fi
 
-pip install --upgrade pip
-pip install -r requirements.txt
+pip3 install --upgrade pip
+pip3 install -r requirements.txt
 source venv/bin/activate
-python manage.py migrate
+python3 manage.py migrate
 
 echo "Setup is complete. Your Django environment is ready."
