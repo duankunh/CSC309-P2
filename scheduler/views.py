@@ -6,6 +6,8 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework import status, permissions
 from datetime import timedelta, datetime, date
+from contacts.models import Contact
+from django.core.mail import send_mail
 
 
 
@@ -134,6 +136,21 @@ def preference_update(request, meeting_id, preference_id):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+@permission_classes([permissions.IsAuthenticated])
+def remind(request, id):
+    contacts_to_remind = Preference.objects.filter(meeting=id, status='Pending')
+    for preference in contacts_to_remind:
+        send_mail(
+            'Meeting Reminder',
+            'This is a reminder to provide the requested information.',
+            'abamakabaka@yahoo.com',
+            [preference.contact.email],
+            fail_silently=False,
+        )
+    return Response({"message": "Reminders sent successfully"},
+                    status=status.HTTP_200_OK)
 
 # for testing the implementation of suggested schedule
 ####################

@@ -18,7 +18,7 @@ class MeetingSerializer(serializers.ModelSerializer):
 class PreferenceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Preference
-        fields = ['id', 'start_time', 'end_time', 'preference_level', 'meeting']
+        fields = ['id', 'start_time', 'end_time', 'preference_level', 'meeting', 'contact', 'status']
 
 
 class ScheduleSerializer(serializers.ModelSerializer):

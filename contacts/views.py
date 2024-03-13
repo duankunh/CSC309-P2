@@ -45,20 +45,19 @@ def update_delete_contact(request, contact_id):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-@api_view(['POST'])
-@permission_classes([permissions.IsAuthenticated])
-def send_reminder(request):
-    contacts_to_remind = Contact.objects.filter(owner=request.user,
-                                                status='Pending')
-    print("reach here?")
-    for contact in contacts_to_remind:
-        print(contact)
-        send_mail(
-            'Meeting Reminder',
-            'This is a reminder to provide the requested information.',
-            'abamakabaka@yahoo.com',
-            [contact.email],
-            fail_silently=False,
-        )
-    return Response({"message": "Reminders sent successfully"},
-                    status=status.HTTP_200_OK)
+# @api_view(['POST'])
+# @permission_classes([permissions.IsAuthenticated])
+# def send_reminder(request, id):
+#     contacts_to_remind = Contact.objects.filter(owner=request.user)
+#     print("reach here?")
+#     for contact in contacts_to_remind:
+#         print(contact)
+#         send_mail(
+#             'Meeting Reminder',
+#             'This is a reminder to provide the requested information.',
+#             'abamakabaka@yahoo.com',
+#             [contact.email],
+#             fail_silently=False,
+#         )
+#     return Response({"message": "Reminders sent successfully"},
+#                     status=status.HTTP_200_OK)

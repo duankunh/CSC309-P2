@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from contacts.models import Contact
 class Calendar(models.Model):
     name = models.CharField(max_length=100)  # Name of the calendar
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='calendars')
@@ -32,6 +33,15 @@ class Preference(models.Model):
         default='medium',  # Set default preference level to medium
     )
     meeting = models.ForeignKey(Meeting, on_delete=models.CASCADE)
+    contact = models.ForeignKey(Contact, on_delete=models.CASCADE, default = 1)
+    STATUS_CHOICES = [
+        ('None', 'None'),
+        ('Pending', 'Pending'),
+        ('Accepted', 'Accepted'),
+        ('Rejected', 'Rejected'),
+    ]
+    status = models.CharField(max_length=8, choices=STATUS_CHOICES,
+                            default='None')
 
     def __str__(self):
         return self.meeting.name + ' Preference' +str(self.id)
