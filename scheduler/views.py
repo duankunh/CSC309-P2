@@ -2,11 +2,13 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from .models import Calendar, Meeting, Preference, Schedule
 from .serializers import CalendarSerializer, MeetingSerializer, PreferenceSerializer, ScheduleSerializer
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, permissions
+
 
 @api_view(['GET', 'POST'])
+@permission_classes([permissions.IsAuthenticated])
 def calendar(request):
 
     if request.method == 'GET':
@@ -21,6 +23,7 @@ def calendar(request):
             return Response(serializer.data, status.HTTP_201_CREATED)
 
 @api_view(['GET', 'POST'])
+@permission_classes([permissions.IsAuthenticated])
 def meeting(request, id):
     try:
         Calendar.objects.get(pk=id)
@@ -39,6 +42,7 @@ def meeting(request, id):
             return Response(serializer.data, status.HTTP_201_CREATED)
 
 @api_view(['GET', 'POST'])
+@permission_classes([permissions.IsAuthenticated])
 def preference(request, id):
     try:
         Meeting.objects.get(pk=id)
@@ -57,6 +61,7 @@ def preference(request, id):
             return Response(serializer.data, status.HTTP_201_CREATED)
 
 @api_view(['GET', 'POST'])
+@permission_classes([permissions.IsAuthenticated])
 def schedule_proposals(request, id):
     try:
         Meeting.objects.get(pk=id)
@@ -75,6 +80,7 @@ def schedule_proposals(request, id):
             return Response(serializer.data, status.HTTP_201_CREATED)
 
 @api_view(['GET'])
+@permission_classes([permissions.IsAuthenticated])
 def schedule_get_finalize(request, id):
     try:
         Meeting.objects.get(pk=id)
@@ -87,6 +93,7 @@ def schedule_get_finalize(request, id):
         return JsonResponse({'preference': serializer.data})
 
 @api_view(['PUT'])
+@permission_classes([permissions.IsAuthenticated])
 def schedule_make_finalize(request, meeting_id, schedule_id):
     try:
         Meeting.objects.get(pk=meeting_id)
@@ -104,19 +111,20 @@ def schedule_make_finalize(request, meeting_id, schedule_id):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
 @api_view(['PUT'])
+@permission_classes([permissions.IsAuthenticated])
 def preference_update(request, meeting_id, preference_id):
     try:
         Meeting.objects.get(pk=meeting_id)
     except Meeting.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
-    
+
     try:
         preference = Preference.objects.get(pk=preference_id)
     except Preference.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
-    
+
     if request.method == 'PUT':
         serializer = PreferenceSerializer(preference, data=request.data)
         if serializer.is_valid():

@@ -4,6 +4,7 @@ from rest_framework.decorators import api_view, permission_classes
 from .models import Contact
 from .serializers import ContactSerializer
 from django.shortcuts import get_object_or_404
+from django.core.mail import send_mail
 
 
 @api_view(['GET', 'POST'])
@@ -42,3 +43,21 @@ def update_delete_contact(request, contact_id):
     elif request.method == 'DELETE':
         contact.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+@api_view(['POST'])
+@permission_classes([permissions.IsAuthenticated])
+def send_reminder(request):
+    contacts_to_remind = Contact.objects.filter(owner=request.user,
+                                                status='Pending')
+    print("reach here?")
+    for contact in contacts_to_remind:
+        send_mail(
+            'Meeting Reminder',
+            'This is a reminder to provide the requested information.',
+            'jack.duan@mail.utoronto.ca',  # Your email
+            [contact.email],
+            fail_silently=False,
+        )
+    return Response({"message": "Reminders sent successfully"},
+                    status=status.HTTP_200_OK)
