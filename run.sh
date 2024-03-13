@@ -1,3 +1,3 @@
 #!/bin/bash
-source myprojectenv/bin/activate
-python manage.py runserver
+source venv/bin/activate
+python3 manage.py runserver
