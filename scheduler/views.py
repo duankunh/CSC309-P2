@@ -104,4 +104,23 @@ def schedule_make_finalize(request, meeting_id, schedule_id):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(['PUT'])
+def preference_update(request, meeting_id, preference_id):
+    try:
+        Meeting.objects.get(pk=meeting_id)
+    except Meeting.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    
+    try:
+        preference = Preference.objects.get(pk=preference_id)
+    except Preference.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    
+    if request.method == 'PUT':
+        serializer = PreferenceSerializer(preference, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 # Create your views here.
